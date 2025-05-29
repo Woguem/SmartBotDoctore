@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SmartBotDoctor - Recommandations de Santé</title>
+    <link rel="stylesheet" href="{{ url_for('static', path='/css/styles.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    
+    <div class="container">
+        <header>
+            <div class="logo-container">
+                <img src="{{ url_for('static', path='/images/doctor.png') }}" alt="Doctor" class="header-image">
+                <h1>SmartBotDoctor</h1>
+                <img src="{{ url_for('static', path='/images/robot.png') }}" alt="Robot" class="header-image">
+            </div>
+            <p class="subtitle" data-fr="Obtenez des recommandations de santé personnalisées" data-en="Get personalized health recommendations">Obtenez des recommandations de santé personnalisées</p>
+            
+            <div class="language-switcher">
+                <button class="lang-btn" data-lang="fr" data-fr="Français" data-en="French">Français</button>
+                <button class="lang-btn" data-lang="en" data-fr="Anglais" data-en="English">English</button>
+            </div>
+        </header>
+
+        <main>
+            <form id="healthForm" class="health-form">
+                <div class="form-group">
+                    <label for="name" data-fr="Nom" data-en="Name">Nom</label>
+                    <div class="input-group">
+                        <input type="text" id="name" name="name" required
+                            data-fr-placeholder="Entrez votre nom" data-en-placeholder="Enter your name">
+                        <div class="audio-controls">
+                            <button type="button" class="audio-btn" id="nameStart" title="Start Recording">
+                                <i class="fas fa-microphone"></i>
+                            </button>
+                            <button type="button" class="audio-btn" id="nameStop" title="Stop Recording" style="display: none;">
+                                <i class="fas fa-stop"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="age" data-fr="Âge" data-en="Age">Âge</label>
+                    <div class="input-group">
+                        <input type="number" id="age" name="age" required min="0" max="120"
+                            data-fr-placeholder="Entrez votre âge" data-en-placeholder="Enter your age">
+                        <div class="audio-controls">
+                            <button type="button" class="audio-btn" id="ageStart" title="Start Recording">
+                                <i class="fas fa-microphone"></i>
+                            </button>
+                            <button type="button" class="audio-btn" id="ageStop" title="Stop Recording" style="display: none;">
+                                <i class="fas fa-stop"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="healthStatus" data-fr="État de santé" data-en="Health Status">État de santé</label>
+                    <div class="input-group">
+                        <textarea id="healthStatus" name="healthStatus" required rows="3"
+                            data-fr-placeholder="Décrivez votre état de santé général" data-en-placeholder="Describe your general health status"></textarea>
+                        <div class="audio-controls">
+                            <button type="button" class="audio-btn" id="healthStatusStart" title="Start Recording">
+                                <i class="fas fa-microphone"></i>
+                            </button>
+                            <button type="button" class="audio-btn" id="healthStatusStop" title="Stop Recording" style="display: none;">
+                                <i class="fas fa-stop"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="symptoms" data-fr="Symptômes" data-en="Symptoms">Symptômes</label>
+                    <div class="input-group">
+                        <textarea id="symptoms" name="symptoms" required rows="3"
+                            data-fr-placeholder="Décrivez vos symptômes" data-en-placeholder="Describe your symptoms"></textarea>
+                        <div class="audio-controls">
+                            <button type="button" class="audio-btn" id="symptomsStart" title="Start Recording">
+                                <i class="fas fa-microphone"></i>
+                            </button>
+                            <button type="button" class="audio-btn" id="symptomsStop" title="Stop Recording" style="display: none;">
+                                <i class="fas fa-stop"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group checkbox-group">
+                    <input type="checkbox" id="is_pregnant" name="is_pregnant">
+                    <label for="is_pregnant" data-fr="Enceinte" data-en="Pregnant">Enceinte</label>
+                </div>
+
+                <div class="form-group checkbox-group">
+                    <input type="checkbox" id="is_diabetic" name="is_diabetic">
+                    <label for="is_diabetic" data-fr="Diabétique" data-en="Diabetic">Diabétique</label>
+                </div>
+
+                <div class="form-group">
+                    <label for="allergies" data-fr="Allergies" data-en="Allergies">Allergies</label>
+                    <div class="input-group">
+                        <textarea id="allergies" name="allergies" rows="2"
+                            data-fr-placeholder="Listez vos allergies (si aucune, laissez vide)" data-en-placeholder="List your allergies (if none, leave empty)"></textarea>
+                        <div class="audio-controls">
+                            <button type="button" class="audio-btn" id="allergiesStart" title="Start Recording">
+                                <i class="fas fa-microphone"></i>
+                            </button>
+                            <button type="button" class="audio-btn" id="allergiesStop" title="Stop Recording" style="display: none;">
+                                <i class="fas fa-stop"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="disclaimer" data-fr="Note: Ce service ne remplace pas une consultation médicale professionnelle." 
+                    data-en="Note: This service does not replace professional medical consultation.">
+                    Note: Ce service ne remplace pas une consultation médicale professionnelle.
+                </div>
+
+                <button type="submit" class="submit-btn" data-fr="Obtenir des recommandations" data-en="Get Recommendations">
+                    Obtenir des recommandations
+                </button>
+            </form>
+
+            <div id="loading" class="loading" style="display: none;">
+                <div class="spinner"></div>
+                <p data-fr="Génération des recommandations en cours..." data-en="Generating recommendations...">
+                    Génération des recommandations en cours...
+                </p>
+            </div>
+
+            <div id="error" class="error" style="display: none;"></div>
+
+            <div id="chat-container" class="chat-container" style="display: none;">
+                <div class="chat-messages" id="chat-messages"></div>
+                <div class="chat-input-container">
+                    <input type="text" id="chat-input" class="chat-input" 
+                        data-fr-placeholder="Posez votre question ici..." 
+                        data-en-placeholder="Ask your question here...">
+                    <div class="audio-controls">
+                        <button type="button" class="audio-btn" id="chatStart" title="Start Recording">
+                            <i class="fas fa-microphone"></i>
+                        </button>
+                        <button type="button" class="audio-btn" id="chatStop" title="Stop Recording" style="display: none;">
+                            <i class="fas fa-stop"></i>
+                        </button>
+                    </div>
+                    <button id="send-message" class="send-btn">
+                        <i class="fas fa-paper-plane"></i>
+                    </button>
+                </div>
+            </div>
+        </main>
+
+        <footer>
+            <p>SmartBotDoctor - Votre Assistant Santé IA</p>
+            <p class="copyright">© 2024 SmartBotDoctor. Tous droits réservés.</p>
+        </footer>
+    </div>
+
+    <script src="{{ url_for('static', path='/js/main.js') }}"></script>
+</body>
+</html> 
